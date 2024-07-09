@@ -20,7 +20,7 @@ namespace AICamp2024
         {
             List<Node<T>> nodes = new List<Node<T>>();
             Node<T> currentNode = startingNode;
-            Stack<Node<T>> nextNodes = new Stack<Node<T>>();
+            Stack<Node<T>> frontier = new Stack<Node<T>>();
 
             while(currentNode != endingNode)
             {
@@ -29,11 +29,11 @@ namespace AICamp2024
                     Node<T> neighbor = currentNode.Neighbors[i].EndingNode;
                     if (!nodes.Contains(neighbor))
                     {
-                        nextNodes.Push(neighbor);
+                        frontier.Push(neighbor);
                     }
                 }
                 nodes.Add(currentNode);
-                currentNode = nextNodes.Pop();
+                currentNode = frontier.Pop();
             }
 
             nodes.Add(currentNode);
@@ -44,26 +44,49 @@ namespace AICamp2024
         {
             List<Node<T>> nodes = new List<Node<T>>();
             Node<T> currentNode = startingNode;
-            Queue<Node<T>> nextNodes = new Queue<Node<T>>(); 
+            Queue<Node<T>> frontier = new Queue<Node<T>>(); 
 
             while (currentNode != endingNode)
             {
                 for (int i = 0; i < currentNode.Neighbors.Count; i++)
                 {
                     Node<T> neighbor = currentNode.Neighbors[i].EndingNode;
-                    if (!nextNodes.Contains(neighbor) && !nodes.Contains(neighbor))
+                    if (!frontier.Contains(neighbor) && !nodes.Contains(neighbor))
                     {
-                        nextNodes.Enqueue(neighbor);
+                        frontier.Enqueue(neighbor);
                     }
                 }
                 nodes.Add(currentNode);
-                currentNode = nextNodes.Dequeue();
+                currentNode = frontier.Dequeue();
             }
 
             nodes.Add(currentNode);
             return nodes;
         }
 
+        public List<Node<T>> Search(Node<T> startingNode, Node<T> endingNode, Func<List<Node<T>>, Node<T>> selection)
+        {
+            List<Node<T>> nodes = new List<Node<T>>();
+            Node<T> currentNode = startingNode;
+            List<Node<T>> frontier = new List<Node<T>>();
+
+            while (currentNode != endingNode)
+            {
+                for (int i = 0; i < currentNode.Neighbors.Count; i++)
+                {
+                    Node<T> neighbor = currentNode.Neighbors[i].EndingNode;
+                    if (!frontier.Contains(neighbor) && !nodes.Contains(neighbor))
+                    {
+                        frontier.Add(neighbor);
+                    }
+                }
+                nodes.Add(currentNode);
+                currentNode = selection(frontier);
+            }
+
+            nodes.Add(currentNode);
+            return nodes;
+        }
 
     }
 }
