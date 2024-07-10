@@ -9,10 +9,11 @@ namespace Graph
 {
     public class NodeWrapper<T>
     {
-        public Node<T> WrappedNode;
+        public Node<T> WrappedNode { get; set; }
         public float DistanceFromStart { get; set; }
         public NodeWrapper<T> Founder { get; set; }
+        public float DistanceFromEnd { get; set; }
 
-        public NodeWrapper(Node<T> node, float distanceFromStart) => (WrappedNode, DistanceFromStart) = (node, distanceFromStart);
+        public NodeWrapper(Node<T> node, float distanceFromStart, float distanceFromEnd, NodeWrapper<T> founder) => (WrappedNode, DistanceFromStart, DistanceFromEnd, Founder) = (node, distanceFromStart, distanceFromEnd, founder);
     }
 }

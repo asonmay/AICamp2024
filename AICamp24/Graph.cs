@@ -1,6 +1,7 @@
 ﻿using Graph;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,13 +14,13 @@ namespace AICamp2024
         
         public Graph() => Nodes = new List<Node<T>>();
 
-        public void AddNode(T value) => Nodes.Add(new Node<T>(value));
+        public void AddNode(T value, Point pos) => Nodes.Add(new Node<T>(value, pos));
 
         public void AddEdge(Node<T> startingNode, Node<T> endingNode) => startingNode.AddNeighbor(endingNode);
 
-        public List<Node<T>> Search(NodeWrapper<T> startingNode, NodeWrapper<T> endingNode, Func<List<NodeWrapper<T>>, NodeWrapper<T>> selection)
+        public List<Node<T>> Search(NodeWrapper<T> startingNode, NodeWrapper<T> endingNode, Func<List<NodeWrapper<T>>, NodeWrapper<T>> selection, Func<NodeWrapper<T>, NodeWrapper<T>, float> heuristic)
         {
-            List<NodeWrapper<T>> nodes = new List<NodeWrapper<T>>();
+            List<NodeWrapper<T>> visitedNodes = new List<NodeWrapper<T>>();
             NodeWrapper<T> currentNode = startingNode;
             List<NodeWrapper<T>> frontier = new List<NodeWrapper<T>>();
 
@@ -28,17 +29,17 @@ namespace AICamp2024
                 for (int i = 0; i < currentNode.WrappedNode.Neighbors.Count; i++)
                 {
                     float distanceFromStart = currentNode.DistanceFromStart + currentNode.WrappedNode.Neighbors[i].Weight;
-                    NodeWrapper<T> neighbor = new NodeWrapper<T>(currentNode.WrappedNode.Neighbors[i].EndingNode, distanceFromStart);
-                    if (!frontier.Contains(neighbor) && !nodes.Contains(neighbor))
+                    float distanceFromEnd = distanceFromStart + heuristic(currentNode, endingNode);
+                    NodeWrapper<T> neighbor = new NodeWrapper<T>(currentNode.WrappedNode.Neighbors[i].EndingNode, distanceFromStart, distanceFromEnd, currentNode);
+                    if (!visitedNodes.Contains(neighbor))
                     {
                         frontier.Add(neighbor);
-                        neighbor.Founder = currentNode;
                     }
                 }
-                nodes.Add(currentNode);
+
+                visitedNodes.Add(currentNode);
                 currentNode = selection(frontier);
             }
-            nodes.Add(currentNode);
 
             List<Node<T>> path = new List<Node<T>>();
             while(currentNode.WrappedNode != startingNode.WrappedNode)
