@@ -13,6 +13,6 @@ namespace AICamp2024
 
         public Node(T value) => (Value, Neighbors) = (value, new List<Edge<T>>());
 
-        public void AddNeighbor(Node<T> node) => Neighbors.Add(new Edge<T>(this, node));
+        public void AddNeighbor(Node<T> node) => Neighbors.Add(new Edge<T>(this, node, 1));
     }
 }

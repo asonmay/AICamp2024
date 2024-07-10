@@ -10,7 +10,8 @@ namespace AICamp2024
     {
         public Node<T> StartingNode;
         public Node<T> EndingNode;
+        public float Weight;
 
-        public Edge(Node<T> startingNode, Node<T> endingNode) => (StartingNode, EndingNode) = (startingNode, endingNode);
+        public Edge(Node<T> startingNode, Node<T> endingNode, float weight) => (StartingNode, EndingNode, Weight) = (startingNode, endingNode, weight);
     }
 }

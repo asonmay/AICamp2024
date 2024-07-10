@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Graph;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,29 +17,39 @@ namespace AICamp2024
 
         public void AddEdge(Node<T> startingNode, Node<T> endingNode) => startingNode.AddNeighbor(endingNode);
 
-        public List<Node<T>> Search(Node<T> startingNode, Node<T> endingNode, Func<List<Node<T>>, Node<T>> selection)
+        public List<Node<T>> Search(NodeWrapper<T> startingNode, NodeWrapper<T> endingNode, Func<List<NodeWrapper<T>>, NodeWrapper<T>> selection)
         {
-            List<Node<T>> nodes = new List<Node<T>>();
-            Node<T> currentNode = startingNode;
-            List<Node<T>> frontier = new List<Node<T>>();
+            List<NodeWrapper<T>> nodes = new List<NodeWrapper<T>>();
+            NodeWrapper<T> currentNode = startingNode;
+            List<NodeWrapper<T>> frontier = new List<NodeWrapper<T>>();
 
-            while (currentNode != endingNode)
+            while (currentNode.WrappedNode != endingNode.WrappedNode)
             {
-                for (int i = 0; i < currentNode.Neighbors.Count; i++)
+                for (int i = 0; i < currentNode.WrappedNode.Neighbors.Count; i++)
                 {
-                    Node<T> neighbor = currentNode.Neighbors[i].EndingNode;
+                    float distanceFromStart = currentNode.DistanceFromStart + currentNode.WrappedNode.Neighbors[i].Weight;
+                    NodeWrapper<T> neighbor = new NodeWrapper<T>(currentNode.WrappedNode.Neighbors[i].EndingNode, distanceFromStart);
                     if (!frontier.Contains(neighbor) && !nodes.Contains(neighbor))
                     {
                         frontier.Add(neighbor);
+                        neighbor.Founder = currentNode;
                     }
                 }
                 nodes.Add(currentNode);
                 currentNode = selection(frontier);
             }
-
             nodes.Add(currentNode);
-            return nodes;
-        }
 
+            List<Node<T>> path = new List<Node<T>>();
+            while(currentNode.WrappedNode != startingNode.WrappedNode)
+            {
+                path.Add(currentNode.WrappedNode);
+                currentNode = currentNode.Founder;
+            }
+            path.Add(currentNode.WrappedNode);
+            path.Reverse();
+
+            return path;
+        }
     }
 }
