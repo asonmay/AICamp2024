@@ -1,11 +1,10 @@
-﻿using AICamp2024;
-using Graph;
+﻿using Graph;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace AICamp2024
+namespace Graph
 {
     class Program
     {
@@ -15,7 +14,7 @@ namespace AICamp2024
 
             for(int x = 0; x < size.X * size.Y; x++)
             {             
-                graph.AddNode(x, new Point(1,1));                
+                graph.AddNode(x, new Point(x / size.X, x % size.Y));                
             }
 
             for (int y = 0; y < size.Y; y++)
@@ -93,7 +92,7 @@ namespace AICamp2024
         {
             Graph<int> graph = GenerateGraph(new Point(4, 3));
 
-            Func<List<NodeWrapper<int>>, NodeWrapper<int>> selection = DijstrasSelection;
+            Func<List<NodeWrapper<int>>, NodeWrapper<int>> selection = AStarSelection;
             Func<NodeWrapper<int>, NodeWrapper<int>, float> heuristic = ManhattanHeuristic;
 
             List<Node<int>> path = graph.Search(new NodeWrapper<int>(graph.Nodes[0], 0, float.MaxValue, null), new NodeWrapper<int>(graph.Nodes[11], float.MaxValue, 0, null), selection, heuristic);

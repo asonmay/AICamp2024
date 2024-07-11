@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AICamp2024
+namespace Graph
 {
     public class Node<T>
     {
