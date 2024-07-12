@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph", "AICamp24\Graph.csproj", "{8E579F76-6966-44DC-97F3-CFC9C997A3DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphStuff", "AICamp24\GraphStuff.csproj", "{8E579F76-6966-44DC-97F3-CFC9C997A3DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "8Puzzel", "8PuzzelAI\8Puzzel.csproj", "{529DC661-85D3-4294-AF20-EF4D1AE569D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{E89DF143-4304-4628-BB1C-2F4BE5331804}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{529DC661-85D3-4294-AF20-EF4D1AE569D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{529DC661-85D3-4294-AF20-EF4D1AE569D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{529DC661-85D3-4294-AF20-EF4D1AE569D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E89DF143-4304-4628-BB1C-2F4BE5331804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E89DF143-4304-4628-BB1C-2F4BE5331804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E89DF143-4304-4628-BB1C-2F4BE5331804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E89DF143-4304-4628-BB1C-2F4BE5331804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

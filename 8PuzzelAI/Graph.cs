@@ -85,12 +85,27 @@ namespace _8PuzzelAI
         {
             for(int i = 0; i < list.Count; i++)
             {
-                if(state.Equals(list[i]))
+                if (Equals(list[i], state))
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        private bool Equals(int[,] item1, int[,] item2)
+        {
+            for(int x = 0; x < item1.GetLength(0); x++)
+            {
+                for(int y = 0; y < item2.GetLength(1); y++)
+                {
+                    if (item1[x, y] != item2[x, y])
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public List<Node> Search(NodeWrapper startingNode, NodeWrapper endingNode, Func<List<NodeWrapper>, NodeWrapper> selection, Func<NodeWrapper, NodeWrapper, float> heuristic)
@@ -99,29 +114,35 @@ namespace _8PuzzelAI
             NodeWrapper currentNode = startingNode;
             List<NodeWrapper> frontier = new List<NodeWrapper>();
 
-            while (currentNode.WrappedNode != endingNode.WrappedNode)
+            while (!Equals(currentNode.WrappedNode.Value, endingNode.WrappedNode.Value))
             {
                 AddSuccessors(currentNode.WrappedNode, GenerateSuccessors(currentNode.WrappedNode));
                 for (int i = 0; i < currentNode.WrappedNode.Neighbors.Count; i++)
                 {
-                    NodeWrapper neighbor = new NodeWrapper(currentNode.WrappedNode.Neighbors[i], heuristic(startingNode, endingNode), currentNode);
+                    float distanceFromStart = currentNode.DistanceFromStart + 1;
+                    float cumulitiveDistance = distanceFromStart + heuristic(currentNode, endingNode);
+                    NodeWrapper neighbor = new NodeWrapper(currentNode.WrappedNode.Neighbors[i], cumulitiveDistance, distanceFromStart, currentNode);
                     if (!Contains(visitedNodes, neighbor.WrappedNode.Value))
                     {
                         frontier.Add(neighbor);
                     }
                 }
-
                 visitedNodes.Add(currentNode.WrappedNode.Value);
                 currentNode = selection(frontier);
             }
 
+            return GeneratePath(currentNode, startingNode);
+        }
+
+        private List<Node> GeneratePath(NodeWrapper node, NodeWrapper startingNode)
+        {
             List<Node> path = new List<Node>();
-            while (currentNode.WrappedNode != startingNode.WrappedNode)
+            while (!Equals(node.WrappedNode.Value, startingNode.WrappedNode.Value))
             {
-                path.Add(currentNode.WrappedNode);
-                currentNode = currentNode.Founder;
+                path.Add(node.WrappedNode);
+                node = node.Founder;
             }
-            path.Add(currentNode.WrappedNode);
+            path.Add(node.WrappedNode);
             path.Reverse();
 
             return path;

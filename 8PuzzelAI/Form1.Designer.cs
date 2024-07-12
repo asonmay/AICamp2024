@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.Square11 = new System.Windows.Forms.Button();
             this.Square23 = new System.Windows.Forms.Button();
             this.Square22 = new System.Windows.Forms.Button();
@@ -39,6 +40,8 @@
             this.Square33 = new System.Windows.Forms.Button();
             this.SolveButton = new System.Windows.Forms.Button();
             this.ScrambleButon = new System.Windows.Forms.Button();
+            this.VisualizerTImer = new System.Windows.Forms.Timer(this.components);
+            this.NumOfMoves = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Square11
@@ -136,7 +139,7 @@
             this.SolveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SolveButton.Location = new System.Drawing.Point(172, 330);
             this.SolveButton.Name = "SolveButton";
-            this.SolveButton.Size = new System.Drawing.Size(155, 37);
+            this.SolveButton.Size = new System.Drawing.Size(152, 37);
             this.SolveButton.TabIndex = 9;
             this.SolveButton.Text = "Solve";
             this.SolveButton.UseVisualStyleBackColor = true;
@@ -145,19 +148,35 @@
             // ScrambleButon
             // 
             this.ScrambleButon.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ScrambleButon.Location = new System.Drawing.Point(15, 330);
+            this.ScrambleButon.Location = new System.Drawing.Point(12, 330);
             this.ScrambleButon.Name = "ScrambleButon";
-            this.ScrambleButon.Size = new System.Drawing.Size(151, 37);
+            this.ScrambleButon.Size = new System.Drawing.Size(154, 37);
             this.ScrambleButon.TabIndex = 10;
             this.ScrambleButon.Text = "Scramble";
             this.ScrambleButon.UseVisualStyleBackColor = true;
             this.ScrambleButon.Click += new System.EventHandler(this.button1_Click);
             // 
+            // VisualizerTImer
+            // 
+            this.VisualizerTImer.Interval = 500;
+            this.VisualizerTImer.Tick += new System.EventHandler(this.VisualizerTImer_Tick);
+            // 
+            // NumOfMoves
+            // 
+            this.NumOfMoves.AutoSize = true;
+            this.NumOfMoves.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NumOfMoves.Location = new System.Drawing.Point(12, 370);
+            this.NumOfMoves.Name = "NumOfMoves";
+            this.NumOfMoves.Size = new System.Drawing.Size(71, 24);
+            this.NumOfMoves.TabIndex = 11;
+            this.NumOfMoves.Text = "Moves:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 380);
+            this.ClientSize = new System.Drawing.Size(333, 397);
+            this.Controls.Add(this.NumOfMoves);
             this.Controls.Add(this.ScrambleButon);
             this.Controls.Add(this.SolveButton);
             this.Controls.Add(this.Square33);
@@ -173,6 +192,7 @@
             this.Text = "8 Puzzel";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -189,6 +209,8 @@
         private System.Windows.Forms.Button Square33;
         private System.Windows.Forms.Button SolveButton;
         private System.Windows.Forms.Button ScrambleButon;
+        private System.Windows.Forms.Timer VisualizerTImer;
+        private System.Windows.Forms.Label NumOfMoves;
     }
 }
 

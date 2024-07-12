@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace _8PuzzelAI
     {
         Button[,] buttonGrid;
         int[,] numberGrid;
+        List<Node> path;
+        int index;
 
         public Form1()
         {
@@ -30,7 +33,7 @@ namespace _8PuzzelAI
             {
                 for (int y = x + 1; y < 9; y++)
                 {
-                    if (grid[x % 3, x / 3] > grid[y % 3, y / 3])
+                    if (grid[x / 3, x % 3] > grid[y / 3, y % 3] && grid[x/3, x % 3] != 0 && grid[y / 3, y % 3] != 0)
                     {
                         inversions++;
                     }
@@ -60,10 +63,20 @@ namespace _8PuzzelAI
                     }
                 }
             }
-           
-            if(!IsValidGrid(grid))
+
+            return grid;
+        }
+
+        private int[,] Scramble()
+        {
+            int[,] grid = new int[3, 3];
+            while(true)
             {
                 grid = GenerateGrid();
+                if(IsValidGrid(grid))
+                {
+                    break;
+                }
             }
             return grid;
         }
@@ -76,7 +89,7 @@ namespace _8PuzzelAI
                 {Square21, Square22, Square23 },
                 {Square31, Square32, Square33 },
             };
-            numberGrid = GenerateGrid();
+            numberGrid = Scramble();
             for(int x = 0; x < 3; x++)
             {
                 for(int y = 0; y < 3; y++)
@@ -99,7 +112,7 @@ namespace _8PuzzelAI
 
             for (int i = 0; i < nodes.Count; i++)
             {
-                if (nodes[i].DistanceFromEnd < node.DistanceFromEnd)
+                if (nodes[i].CumulitaveDistance < node.CumulitaveDistance)
                 {
                     node = nodes[i];
                 }
@@ -113,6 +126,7 @@ namespace _8PuzzelAI
         { 
             float squaresAwayFromGoal = 0f;
             Dictionary<int, Point> correctPositions = new Dictionary<int, Point>();
+
             for (int x = 0; x < endingNode.WrappedNode.Value.GetLength(0); x++)
             {
                 for (int y = 0; y < endingNode.WrappedNode.Value.GetLength(1); y++)
@@ -120,11 +134,15 @@ namespace _8PuzzelAI
                     correctPositions.Add(endingNode.WrappedNode.Value[x, y], new Point(x, y));
                 }
             }
+
             for (int x = 0; x < startingNode.WrappedNode.Value.GetLength(0); x++)
             {
                 for (int y = 0; y < startingNode.WrappedNode.Value.GetLength(1); y++)
                 {
-                    squaresAwayFromGoal += Math.Abs(x - correctPositions[x * 3 + y].X) + Math.Abs(y - correctPositions[x * 3 + y].Y);
+                    if (startingNode.WrappedNode.Value[x,y] != 0)
+                    {
+                        squaresAwayFromGoal += Math.Abs(x - correctPositions[startingNode.WrappedNode.Value[x, y]].X) + Math.Abs(y - correctPositions[startingNode.WrappedNode.Value[x, y]].Y);
+                    }
                 }
             }
             return squaresAwayFromGoal;
@@ -141,13 +159,9 @@ namespace _8PuzzelAI
 
             Graph graph = new Graph();
             graph.AddNode(numberGrid);
-            List<Node> path = graph.Search(new NodeWrapper(graph.Nodes[0], float.MaxValue, null), new NodeWrapper(new Node(solvedGrid),0,null), AStarSelection, Heuristic);
-
-            for(int i = 0; i < path.Count; i++)
-            {
-                SetGrid(path[i].Value);
-                Thread.Sleep(500);
-            }
+            path = graph.Search(new NodeWrapper(graph.Nodes[0], float.MaxValue, 0, null), new NodeWrapper(new Node(solvedGrid),0, float.MaxValue, null), AStarSelection, Heuristic);
+            index = 0;
+            VisualizerTImer.Enabled = true;
         }
 
         private void SetGrid(int[,] numbers)
@@ -155,8 +169,8 @@ namespace _8PuzzelAI
             for (int x = 0; x < 3; x++)
             {
                 for (int y = 0; y < 3; y++)
-                {
-                    if (numberGrid[x, y] == 0)
+                { 
+                    if (numbers[x, y] == 0)
                     {
                         buttonGrid[x, y].Text = "";
                     }
@@ -170,7 +184,7 @@ namespace _8PuzzelAI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            numberGrid = GenerateGrid();
+            numberGrid = Scramble();
             for (int x = 0; x < 3; x++)
             {
                 for (int y = 0; y < 3; y++)
@@ -190,6 +204,18 @@ namespace _8PuzzelAI
         private void Square13_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void VisualizerTImer_Tick(object sender, EventArgs e)
+        {
+            if(index == path.Count)
+            {
+                VisualizerTImer.Enabled = false;
+                return;
+            }
+            SetGrid(path[index].Value);
+            index++;
+            NumOfMoves.Text = $"Moves: {index + 1}";
         }
     }
 }

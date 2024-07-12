@@ -10,8 +10,9 @@ namespace _8PuzzelAI
     {
         public Node WrappedNode { get; set; }
         public NodeWrapper Founder { get; set; }
-        public float DistanceFromEnd { get; set; }
+        public float CumulitaveDistance { get; set; }
+        public float DistanceFromStart { get; set; }
 
-        public NodeWrapper(Node node, float distanceFromEnd, NodeWrapper founder) => (WrappedNode, DistanceFromEnd, Founder) = (node, distanceFromEnd, founder);
+        public NodeWrapper(Node node, float distanceFromEnd, float cumulitiveDistance, NodeWrapper founder) => (WrappedNode, DistanceFromStart, CumulitaveDistance, Founder) = (node, cumulitiveDistance, distanceFromEnd, founder);
     }
 }
