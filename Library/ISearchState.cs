@@ -8,8 +8,8 @@ namespace Library
 {
     public interface ISearchState<T>
     {
-        public List<ISearchState<T>> GetSuccessors(T node, List<T> successors);
+        public List<ISearchState<T>> GetSuccessors();
 
-        public bool Equals(ISearchState<T> other);
+        public bool Equals(int[,] other);
     }
 }

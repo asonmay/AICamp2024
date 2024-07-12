@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,65 +20,13 @@ namespace _8PuzzelAI
 
         public void AddEdge(Node startingNode, Node endingNode) => startingNode.AddNeighbor(endingNode);
 
-        private List<Node> GenerateSuccessors(Node node)
+        private void AddSuccessors(NodeWrapper node)
         {
-            Point sliderIndex = new Point();
-            for(int x = 0; x < node.Value.GetLength(0); x++)
-            {
-                for(int y = 0; y < node.Value.GetLength(1); y++)
-                {
-                    if (node.Value[x,y] == 0)
-                    {
-                        sliderIndex = new Point(x, y);
-                    }
-                }
-            }
-
-            List<Node> nodes = new List<Node>();
-            if(sliderIndex.X - 1  >= 0)
-            {
-                nodes.Add(new Node(SwapValues(node.Value, sliderIndex, new Point(sliderIndex.X - 1, sliderIndex.Y))));
-            }
-            if (sliderIndex.X + 1 < 3)
-            {
-                nodes.Add(new Node(SwapValues(node.Value, sliderIndex, new Point(sliderIndex.X + 1, sliderIndex.Y))));
-            }
-            if (sliderIndex.Y - 1 >= 0)
-            {
-                nodes.Add(new Node(SwapValues(node.Value, sliderIndex, new Point(sliderIndex.X, sliderIndex.Y - 1))));
-            }
-            if (sliderIndex.Y + 1 < 3)
-            {
-                nodes.Add(new Node(SwapValues(node.Value, sliderIndex, new Point(sliderIndex.X, sliderIndex.Y + 1))));
-            }
-            
-            return nodes;
-        }
-
-        private int[,] SwapValues(int[,] array, Point index1, Point index2)
-        {
-            int[,] newArray = new int[3,3];
-            for(int x = 0; x < 3; x++)
-            {
-                for(int y = 0; y < 3; y++)
-                {
-                    newArray[x, y] = array[x, y];
-                }
-            }
-
-            int temp = newArray[index1.X, index1.Y];
-            newArray[index1.X, index1.Y] = newArray[index2.X, index2.Y];
-            newArray[index2.X, index2.Y] = temp;
-
-            return newArray;
-        }
-
-        private void AddSuccessors(Node node, List<Node> successors)
-        {
+            List <ISearchState<int[,]>> successors = node.GetSuccessors();
             for(int i = 0; i< successors.Count; i++)
             {
-                node.AddNeighbor(successors[i]);
-                Nodes.Add(successors[i]);
+                node.WrappedNode.AddNeighbor(((NodeWrapper)successors[i]).WrappedNode);
+                Nodes.Add(((NodeWrapper)successors[i]).WrappedNode);
             }
         }
 
@@ -93,11 +42,11 @@ namespace _8PuzzelAI
             return false;
         }
 
-        private bool Equals(int[,] item1, int[,] item2)
+        public bool Equals(int[,] item1, int[,] item2)
         {
-            for(int x = 0; x < item1.GetLength(0); x++)
+            for (int x = 0; x < item1.GetLength(0); x++)
             {
-                for(int y = 0; y < item2.GetLength(1); y++)
+                for (int y = 0; y < item1.GetLength(1); y++)
                 {
                     if (item1[x, y] != item2[x, y])
                     {
@@ -114,9 +63,9 @@ namespace _8PuzzelAI
             NodeWrapper currentNode = startingNode;
             List<NodeWrapper> frontier = new List<NodeWrapper>();
 
-            while (!Equals(currentNode.WrappedNode.Value, endingNode.WrappedNode.Value))
+            while (!currentNode.Equals(endingNode.WrappedNode.Value))
             {
-                AddSuccessors(currentNode.WrappedNode, GenerateSuccessors(currentNode.WrappedNode));
+                AddSuccessors(currentNode);
                 for (int i = 0; i < currentNode.WrappedNode.Neighbors.Count; i++)
                 {
                     float distanceFromStart = currentNode.DistanceFromStart + 1;
@@ -137,7 +86,7 @@ namespace _8PuzzelAI
         private List<Node> GeneratePath(NodeWrapper node, NodeWrapper startingNode)
         {
             List<Node> path = new List<Node>();
-            while (!Equals(node.WrappedNode.Value, startingNode.WrappedNode.Value))
+            while (!node.Equals(startingNode.WrappedNode.Value))
             {
                 path.Add(node.WrappedNode);
                 node = node.Founder;
