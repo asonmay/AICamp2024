@@ -8,9 +8,8 @@ namespace TwoPlusTwo
 {
     internal class GameState
     {
-        public List<int> Values;
-        public List<char> Charactors;
-        public char CurrentChar;
+        public List<Variable> Values;
+        public Variable var;
         public Dictionary<char, List<int>> Domain;
 
         public GameState(List<int> values, List<char> charactors, Dictionary<char, List<int>> domain, char currentChar)
