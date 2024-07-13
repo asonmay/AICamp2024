@@ -10,6 +10,6 @@ namespace Library
     {
         public List<ISearchState<T>> GetSuccessors();
 
-        public bool Equals(int[,] other);
+        public bool Equals(T other);
     }
 }
