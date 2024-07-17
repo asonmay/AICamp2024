@@ -9,7 +9,5 @@ namespace Library
     public interface ISearchState<T>
     {
         public List<ISearchState<T>> GetSuccessors();
-
-        public bool Equals(T other);
     }
 }
