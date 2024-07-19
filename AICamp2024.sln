@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "8Puzzel", "8PuzzelAI\8Puzze
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphColoringCSP", "GraphColoringCSP\GraphColoringCSP.csproj", "{71C89D3D-FDB3-4A31-944D-AC824836C7D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC3Implimentation", "AC3Implimentation\AC3Implimentation.csproj", "{57AB77AB-6228-40FC-ACA7-AA5D7B0CFE97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AC3Implimentation", "AC3Implimentation\AC3Implimentation.csproj", "{57AB77AB-6228-40FC-ACA7-AA5D7B0CFE97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe", "TicTacToe\TicTacToe.csproj", "{0E249D83-BC71-4625-A7DD-062B2DDB1F84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{57AB77AB-6228-40FC-ACA7-AA5D7B0CFE97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57AB77AB-6228-40FC-ACA7-AA5D7B0CFE97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57AB77AB-6228-40FC-ACA7-AA5D7B0CFE97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E249D83-BC71-4625-A7DD-062B2DDB1F84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E249D83-BC71-4625-A7DD-062B2DDB1F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E249D83-BC71-4625-A7DD-062B2DDB1F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E249D83-BC71-4625-A7DD-062B2DDB1F84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
