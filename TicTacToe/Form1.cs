@@ -11,23 +11,22 @@ namespace TicTacToe
         private Graph graph;
         private Node node;
         private bool isUserTurn;
+        private bool isGameOver;
         private char[,] currentBoardState;
+        private Dictionary<char[,], Node> gameStates;
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (isUserTurn)
-            {
-                currentBoardState[0,2] = 'O';
-                DrawBoard();
-                isUserTurn = false;
-            }
+            ButtonEvent(new Point(0, 2));
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            gameStates = new Dictionary<char[,], Node>(new CharArrayEqualityComparer());
             isUserTurn = true;
             Graph graph = GenerateGraph();
             currentBoardState = new char[3, 3];
+            isGameOver = false;
 
             grid = new Button[3, 3]
             {
@@ -53,10 +52,63 @@ namespace TicTacToe
 
                 for (int i = 0; i < sucessors.Count; i++)
                 {
-                    graph.AddNode(sucessors[i]);
-                    graph.AddEdge(currentNode, sucessors[i]);
+                    if (gameStates.ContainsKey(sucessors[i].Value))
+                    {
+                        graph.AddEdge(currentNode, gameStates[sucessors[i].Value]);
+                    }
+                    else
+                    {
+                        graph.AddNode(sucessors[i]);
+                        graph.AddEdge(currentNode, sucessors[i]);
+                        gameStates.Add(sucessors[i].Value, sucessors[i]);
+                    }
                     stack.Push(sucessors[i]);
                     frontier.Enqueue(sucessors[i]);
+                }
+            }
+        }
+
+        private void SetNodeWinValue(Node currentNode)
+        {
+            int value = 0;
+            if (currentNode.IsMin)
+            {
+                value = 1;
+            }
+            else
+            {
+                value = -1;
+            }
+
+            for (int i = 0; i < currentNode.Neighbors.Count; i++)
+            {
+                if (currentNode.IsMin)
+                {
+                    if (currentNode.Neighbors[i].WinValue < value)
+                    {
+                        value = currentNode.Neighbors[i].WinValue;
+                    }
+                }
+                else
+                {
+                    if (currentNode.Neighbors[i].WinValue > value)
+                    {
+                        value = currentNode.Neighbors[i].WinValue;
+                    }
+                }
+            }
+            currentNode.WinValue = value;
+        }
+
+        private void GenerateWinValues(Node currentNode, Stack<Node> stack)
+        {
+            while (currentNode.Value != graph.Nodes[0].Value)
+            {
+                currentNode = stack.Pop();
+
+                if (currentNode.Neighbors.Count != 0)
+                {
+                    SetNodeWinValue(currentNode);
                 }
             }
         }
@@ -79,68 +131,33 @@ namespace TicTacToe
             Stack<Node> stack = new Stack<Node>();
 
             CreateNodes(ref currentNode, stack);
-
-            while (currentNode.Value != graph.Nodes[0].Value)
-            {
-                currentNode = stack.Pop();
-
-                if(currentNode.Neighbors.Count != 0)
-                {
-                    int value = 0;
-                    if (currentNode.IsMin)
-                    {
-                        value = 1;
-                    }
-                    else
-                    {
-                        value = -1;
-                    }
-
-                    for (int i = 0; i < currentNode.Neighbors.Count; i++)
-                    {
-                        if (currentNode.IsMin)
-                        {
-                            if (currentNode.Neighbors[i].WinValue < value)
-                            {
-                                value = currentNode.Neighbors[i].WinValue;
-                            }
-                        }
-                        else
-                        {
-                            if (currentNode.Neighbors[i].WinValue > value)
-                            {
-                                value = currentNode.Neighbors[i].WinValue;
-                            }
-                        }
-                    }
-                    currentNode.WinValue = value;
-                }
-            }
+            GenerateWinValues(currentNode, stack);
+            
 
             return graph;
         }
 
         private void DrawBoard()
         {
-            for(int x = 0; x < 3; x++)
+            for (int x = 0; x < 3; x++)
             {
-                for(int y = 0; y < 3; y++)
+                for (int y = 0; y < 3; y++)
                 {
                     if (currentBoardState[x, y] != 0)
                     {
                         grid[x, y].Text = currentBoardState[x, y].ToString();
-                    }        
+                    }
                 }
             }
         }
 
         private bool IsEqual(char[,] item1, char[,] item2)
         {
-            for(int x = 0; x < 3; x++)
+            for (int x = 0; x < 3; x++)
             {
                 for (int y = 0; y < 3; y++)
                 {
-                    if (item1[x,y] != item2[x, y])
+                    if (item1[x, y] != item2[x, y])
                     {
                         return false;
                     }
@@ -149,25 +166,45 @@ namespace TicTacToe
             return true;
         }
 
+        private void UpdateNode()
+        {
+            for (int i = 0; i < node.Neighbors.Count; i++)
+            {
+                if (IsEqual(node.Neighbors[i].Value, currentBoardState))
+                {
+                    node = node.Neighbors[i];
+                    continue;
+                }
+            }
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if(!isUserTurn)
+            if (node.WinValue == 1 && node.Neighbors.Count == 0)
             {
-                for(int i = 0; i < node.Neighbors.Count; i++)
+                GameOverLabel.Text = "You Lost";
+            }
+            else if (node.Neighbors.Count == 0 && node.WinValue == -1)
+            {
+                GameOverLabel.Text = "You Won";
+            }
+
+            if (!isUserTurn && !isGameOver)
+            {
+                UpdateNode();
+
+                if (node.Neighbors.Count == 0)
                 {
-                    if (IsEqual(node.Neighbors[i].Value, currentBoardState))
-                    {
-                        node = node.Neighbors[i];
-                        continue;
-                    }
+                    GameOverLabel.Text = "Tie";
+                    isUserTurn = true;
+                    return;
                 }
 
                 Node nextNode = node.Neighbors[0];
 
-                for(int i = 0; i < node.Neighbors.Count; i++)
+                for (int i = 0; i < node.Neighbors.Count; i++)
                 {
-                    if(nextNode.WinValue < node.Neighbors[i].WinValue)
+                    if (nextNode.WinValue < node.Neighbors[i].WinValue)
                     {
                         nextNode = node.Neighbors[i];
                     }
@@ -182,80 +219,71 @@ namespace TicTacToe
 
         private void buttonI_Click(object sender, EventArgs e)
         {
-            if(isUserTurn)
-            {
-                currentBoardState[2, 2] = 'O';
-                isUserTurn = false;
-                DrawBoard();
-            }
+            ButtonEvent(new Point(2, 2));
         }
 
         private void buttonA_Click(object sender, EventArgs e)
         {
-            if (isUserTurn)
-            {
-                currentBoardState[0,0] = 'O';
-                isUserTurn = false;
-                DrawBoard();
-            }
+            ButtonEvent(new Point(0, 0));
         }
 
         private void buttonB_Click(object sender, EventArgs e)
         {
-            if (isUserTurn)
-            {
-                currentBoardState[1,0] = 'O';
-                isUserTurn = false;
-                DrawBoard();
-            }
+            ButtonEvent(new Point(1, 0));
         }
 
         private void buttonC_Click(object sender, EventArgs e)
         {
-            if (isUserTurn)
-            {
-                currentBoardState[2, 0] = 'O';
-                DrawBoard();
-                isUserTurn = false;
-            }
+            ButtonEvent(new Point(2, 0));
         }
 
         private void buttonD_Click(object sender, EventArgs e)
         {
-            if (isUserTurn)
-            {
-                currentBoardState[0,1] = 'O';
-                DrawBoard();
-                isUserTurn = false;
-            }
+            ButtonEvent(new Point(0, 1));
         }
 
         private void buttonE_Click(object sender, EventArgs e)
         {
-            if (isUserTurn)
-            {
-                currentBoardState[1,1] = 'O';
-                isUserTurn = false;
-            }
+            ButtonEvent(new Point(1, 1));
         }
 
         private void buttonF_Click(object sender, EventArgs e)
         {
-            if (isUserTurn)
-            {
-                currentBoardState[2, 1] = 'O';
-                isUserTurn = false;
-                DrawBoard();
-            }
+            ButtonEvent(new Point(2, 1));
         }
 
         private void buttonH_Click(object sender, EventArgs e)
         {
-            if (isUserTurn)
+            ButtonEvent(new Point(1, 2));
+        }
+
+        private void ButtonEvent(Point gridPos)
+        {
+            if (isUserTurn && currentBoardState[gridPos.X, gridPos.Y] == (char)0 && !isGameOver)
             {
-                currentBoardState[1,2] = 'O';
+                currentBoardState[gridPos.X, gridPos.Y] = 'O';
                 DrawBoard();
                 isUserTurn = false;
+            }
+        }
+
+
+        private void ResetButton_Click(object sender, EventArgs e)
+        {
+            GameOverLabel.Text = "";
+            isUserTurn = true;
+            isGameOver = false;
+            gameStates = new Dictionary<char[,], Node>(new CharArrayEqualityComparer());
+            GenerateGraph();
+            node = graph.Nodes[0];
+
+            for(int x = 0; x < 3; x++)
+            {
+                for(int y = 0; y < 3; y++)
+                {
+                    grid[x, y].Text = "";
+                    currentBoardState[x, y] = (char)0;
+                }
             }
         }
     }

@@ -40,11 +40,14 @@
             buttonF = new Button();
             panel1 = new Panel();
             timer1 = new System.Windows.Forms.Timer(components);
+            ResetButton = new Button();
+            GameOverLabel = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // buttonA
             // 
+            buttonA.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonA.Location = new Point(0, 0);
             buttonA.Name = "buttonA";
             buttonA.Size = new Size(75, 75);
@@ -54,6 +57,7 @@
             // 
             // buttonH
             // 
+            buttonH.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonH.Location = new Point(81, 162);
             buttonH.Name = "buttonH";
             buttonH.Size = new Size(75, 75);
@@ -63,6 +67,7 @@
             // 
             // buttonE
             // 
+            buttonE.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonE.Location = new Point(81, 81);
             buttonE.Name = "buttonE";
             buttonE.Size = new Size(75, 75);
@@ -72,6 +77,7 @@
             // 
             // buttonG
             // 
+            buttonG.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonG.Location = new Point(0, 162);
             buttonG.Name = "buttonG";
             buttonG.Size = new Size(75, 75);
@@ -81,6 +87,7 @@
             // 
             // buttonD
             // 
+            buttonD.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonD.Location = new Point(0, 81);
             buttonD.Name = "buttonD";
             buttonD.Size = new Size(75, 75);
@@ -90,6 +97,7 @@
             // 
             // buttonC
             // 
+            buttonC.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonC.Location = new Point(162, 0);
             buttonC.Name = "buttonC";
             buttonC.Size = new Size(75, 75);
@@ -99,6 +107,7 @@
             // 
             // buttonB
             // 
+            buttonB.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonB.Location = new Point(81, 0);
             buttonB.Name = "buttonB";
             buttonB.Size = new Size(75, 75);
@@ -108,6 +117,7 @@
             // 
             // buttonI
             // 
+            buttonI.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonI.Location = new Point(162, 162);
             buttonI.Name = "buttonI";
             buttonI.Size = new Size(75, 75);
@@ -117,6 +127,7 @@
             // 
             // buttonF
             // 
+            buttonF.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonF.Location = new Point(162, 81);
             buttonF.Name = "buttonF";
             buttonF.Size = new Size(75, 75);
@@ -147,17 +158,40 @@
             timer1.Interval = 17;
             timer1.Tick += timer1_Tick;
             // 
+            // ResetButton
+            // 
+            ResetButton.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            ResetButton.Location = new Point(12, 302);
+            ResetButton.Name = "ResetButton";
+            ResetButton.Size = new Size(238, 34);
+            ResetButton.TabIndex = 10;
+            ResetButton.Text = "Reset Board";
+            ResetButton.UseVisualStyleBackColor = true;
+            ResetButton.Click += ResetButton_Click;
+            // 
+            // GameOverLabel
+            // 
+            GameOverLabel.AutoSize = true;
+            GameOverLabel.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            GameOverLabel.Location = new Point(87, 261);
+            GameOverLabel.Name = "GameOverLabel";
+            GameOverLabel.Size = new Size(0, 30);
+            GameOverLabel.TabIndex = 11;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(262, 265);
+            ClientSize = new Size(262, 348);
+            Controls.Add(GameOverLabel);
+            Controls.Add(ResetButton);
             Controls.Add(panel1);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -173,5 +207,7 @@
         private Button buttonF;
         private Panel panel1;
         private System.Windows.Forms.Timer timer1;
+        private Button ResetButton;
+        private Label GameOverLabel;
     }
 }
