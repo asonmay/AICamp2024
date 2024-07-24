@@ -64,15 +64,7 @@ namespace TicTacToe
 
         private void SetNodeWinValue(Node currentNode)
         {
-            int value = 0;
-            if (currentNode.IsMin)
-            {
-                value = 1;
-            }
-            else
-            {
-                value = -1;
-            }
+            int value = currentNode.IsMin ? 1 : -1;
 
             for (int i = 0; i < currentNode.Neighbors.Count; i++)
             {

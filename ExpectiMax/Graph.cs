@@ -50,40 +50,45 @@ namespace ExpectiMax
             float value = 0;
             for(int i = 0; i < currentNode.Neighbors.Count; i++)
             {
-                value += currentNode.Neighbors[i].WinValue * currentNode.Neighbors[i].Chance/100;
+                value += currentNode.Neighbors[i].WinValue * currentNode.Neighbors[i].Chance / 100;
             }
             currentNode.WinValue = value;
         }
 
         private void SetNodeChance(Node currentNode)
         {
-            int numOfLoss = 0;
-            int numOfWin = 0;
-
-            for(int i = 0; i < currentNode.Neighbors.Count; i++)
+            if(currentNode.Neighbors.Count > 1)
             {
-                if (currentNode.Neighbors[i].WinValue <= 0)
+                int index = 0;
+                float value = float.NegativeInfinity;
+
+                for (int i = 0; i < currentNode.Neighbors.Count; i++)
                 {
-                    numOfLoss++;
+                    if (currentNode.Neighbors[i].WinValue > value)
+                    {
+                        value = currentNode.Neighbors[i].WinValue;
+                        index = i;
+                    }
                 }
-                else
+
+                for (int i = 0; i < currentNode.Neighbors.Count; i++)
                 {
-                    numOfWin++;
+                    if (i == index)
+                    {
+                        currentNode.Neighbors[i].Chance = 90;
+                    }
+                    else
+                    {
+                        currentNode.Neighbors[i].Chance = (10 / currentNode.Neighbors.Count) - 1;
+                    }
                 }
             }
-
-            for(int i = 0; i < currentNode.Neighbors.Count; i++)
+            else
             {
-                if(currentNode.Neighbors[i].WinValue <= 0)
-                {
-                    currentNode.Neighbors[i].Chance = 10 / numOfLoss;
-                }
-                else
-                {
-                    currentNode.Neighbors[i].Chance = 90 / numOfWin;
-                }
+                currentNode.Neighbors[0].Chance = 100;
             }
         }
+            
 
         private void GenerateWinValues(Node currentNode, Stack<Node> stack)
         {

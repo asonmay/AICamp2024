@@ -78,14 +78,7 @@ namespace TicTacToe
             {
                 if (board[i,0] != 0 && board[i,0] == board[i,1] && board[i,1] == board[i,2])
                 {
-                    if (board[i, 0] == 'O')
-                    {
-                        WinValue = -1;
-                    }
-                    else
-                    {
-                        WinValue = 1;
-                    }
+                    WinValue = board[i, 0] == 'O' ? -1 : 1;
                     return true;
                 }
             }
@@ -93,39 +86,18 @@ namespace TicTacToe
             {
                 if (board[0, i] != 0 && board[0, i] == board[1, i] && board[1, i] == board[2, i])
                 {
-                    if (board[0, i] == 'O')
-                    {
-                        WinValue = -1;
-                    }
-                    else
-                    {
-                        WinValue = 1;
-                    }
+                    WinValue = board[0, i] == 'O' ? -1 : 1;
                     return true;
                 }
             }
             if (board[0, 0] != 0 && board[0,0] == board[1,1] && board[1,1] == board[2,2])
             {
-                if (board[0, 0] == 'O')
-                {
-                    WinValue = -1;
-                }
-                else
-                {
-                    WinValue = 1;
-                }
+                WinValue = board[0, 0] == 'O' ? -1 : 1;
                 return true;
             }
             if (board[2, 0] != 0 && board[2,0] == board[1,1] && board[1,1] == board[0,2])
             {
-                if (board[2, 0] == 'O')
-                {
-                    WinValue = -1;
-                }
-                else
-                {
-                    WinValue = 1;
-                }
+                WinValue = board[2, 0] == 'O' ? -1 : 1;
                 return true;
             }
             return false;
