@@ -1,4 +1,4 @@
-namespace TicTacToe
+namespace ExpectiMax
 {
     public partial class Form1 : Form
     {
@@ -13,7 +13,6 @@ namespace TicTacToe
         private bool isUserTurn;
         private bool isGameOver;
         private char[,] currentBoardState;
-        private Dictionary<char[,], Node> gameStates;
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -22,9 +21,9 @@ namespace TicTacToe
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            gameStates = new Dictionary<char[,], Node>();
             isUserTurn = true;
-            Graph graph = GenerateGraph();
+            Graph graph = new Graph();
+            graph.GenerateGraph();
             currentBoardState = new char[3, 3];
             isGameOver = false;
 
@@ -36,99 +35,6 @@ namespace TicTacToe
             };
 
             node = graph.Nodes[0];
-        }
-
-        private void CreateNodes(ref Node currentNode, Stack<Node> stack)
-        {
-            Queue<Node> frontier = new Queue<Node>();
-
-            frontier.Enqueue(graph.Nodes[0]);
-            stack.Push(currentNode);
-
-            while (frontier.Count > 0)
-            {
-                currentNode = frontier.Dequeue();
-                List<Node> sucessors = currentNode.GetSuccessors();
-
-                for (int i = 0; i < sucessors.Count; i++)
-                {
-                    graph.AddNode(sucessors[i]);
-                    graph.AddEdge(currentNode, sucessors[i]);
-                    gameStates.Add(sucessors[i].Value, sucessors[i]);
-                    
-                    stack.Push(sucessors[i]);
-                    frontier.Enqueue(sucessors[i]);
-                }
-            }
-        }
-
-        private void SetNodeWinValue(Node currentNode)
-        {
-            int value = 0;
-            if (currentNode.IsMin)
-            {
-                value = 1;
-            }
-            else
-            {
-                value = -1;
-            }
-
-            for (int i = 0; i < currentNode.Neighbors.Count; i++)
-            {
-                if (currentNode.IsMin)
-                {
-                    if (currentNode.Neighbors[i].WinValue < value)
-                    {
-                        value = currentNode.Neighbors[i].WinValue;
-                    }
-                }
-                else
-                {
-                    if (currentNode.Neighbors[i].WinValue > value)
-                    {
-                        value = currentNode.Neighbors[i].WinValue;
-                    }
-                }
-            }
-            currentNode.WinValue = value;
-        }
-
-        private void GenerateWinValues(Node currentNode, Stack<Node> stack)
-        {
-            while (currentNode.Value != graph.Nodes[0].Value)
-            {
-                currentNode = stack.Pop();
-
-                if (currentNode.Neighbors.Count != 0)
-                {
-                    SetNodeWinValue(currentNode);
-                }
-            }
-        }
-
-        private Graph GenerateGraph()
-        {
-            graph = new Graph();
-
-            List<Point> list = new List<Point>();
-            for (int x = 0; x < 3; x++)
-            {
-                for (int y = 0; y < 3; y++)
-                {
-                    list.Add(new Point(x, y));
-                }
-            }
-
-            graph.AddNode(new Node(new char[3, 3], 0, true, list));
-            Node currentNode = graph.Nodes[0];
-            Stack<Node> stack = new Stack<Node>();
-
-            CreateNodes(ref currentNode, stack);
-            GenerateWinValues(currentNode, stack);
-            
-
-            return graph;
         }
 
         private void DrawBoard()
@@ -267,8 +173,8 @@ namespace TicTacToe
             GameOverLabel.Text = "";
             isUserTurn = true;
             isGameOver = false;
-            gameStates = new Dictionary<char[,], Node>();
-            GenerateGraph();
+            graph = new Graph();
+            graph.GenerateGraph();
             node = graph.Nodes[0];
 
             for(int x = 0; x < 3; x++)
