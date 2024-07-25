@@ -73,7 +73,7 @@ namespace ExpectiMax
                 if (IsEqual(node.Neighbors[i].Value, currentBoardState))
                 {
                     node = node.Neighbors[i];
-                    continue;
+                    return;
                 }
             }
         }

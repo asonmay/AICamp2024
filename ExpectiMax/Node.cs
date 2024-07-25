@@ -16,7 +16,7 @@ namespace ExpectiMax
         public int Chance;
         public List<Point> EmptySquares;
 
-        public Node(char[,] value, int winValue, bool isChance, List<Point> emptySquares) => (Value, Neighbors, WinValue, IsChance, EmptySquares) = (value, new List<Node>(), winValue, isChance, emptySquares);
+        public Node(char[,] value, float winValue, bool isChance, List<Point> emptySquares) => (Value, Neighbors, WinValue, IsChance, EmptySquares) = (value, new List<Node>(), winValue, isChance, emptySquares);
 
         public void AddNeighbor(Node node) => Neighbors.Add(node);
 
