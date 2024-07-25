@@ -22,7 +22,7 @@ namespace ExpectiMax
         private void Form1_Load(object sender, EventArgs e)
         {
             isUserTurn = true;
-            Graph graph = new Graph();
+            graph = new Graph();
             graph.GenerateGraph();
             currentBoardState = new char[3, 3];
             isGameOver = false;
@@ -78,45 +78,6 @@ namespace ExpectiMax
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (node.WinValue == 1 && node.Neighbors.Count == 0)
-            {
-                GameOverLabel.Text = "You Lost";
-            }
-            else if (node.Neighbors.Count == 0 && node.WinValue == -1)
-            {
-                GameOverLabel.Text = "You Won";
-            }
-
-            if (!isUserTurn && !isGameOver)
-            {
-                UpdateNode();
-
-                if (node.Neighbors.Count == 0)
-                {
-                    GameOverLabel.Text = "Tie";
-                    isUserTurn = true;
-                    return;
-                }
-
-                Node nextNode = node.Neighbors[0];
-
-                for (int i = 0; i < node.Neighbors.Count; i++)
-                {
-                    if (nextNode.WinValue < node.Neighbors[i].WinValue)
-                    {
-                        nextNode = node.Neighbors[i];
-                    }
-                }
-
-                node = nextNode;
-                currentBoardState = node.Value;
-                isUserTurn = true;
-                DrawBoard();
-            }
-        }
-
         private void buttonI_Click(object sender, EventArgs e)
         {
             ButtonEvent(new Point(2, 2));
@@ -162,27 +123,57 @@ namespace ExpectiMax
             if (isUserTurn && currentBoardState[gridPos.X, gridPos.Y] == (char)0 && !isGameOver)
             {
                 currentBoardState[gridPos.X, gridPos.Y] = 'O';
+                UpdateNode();
                 DrawBoard();
                 isUserTurn = false;
+
+                if (node.Neighbors.Count == 0 && node.WinValue == -1)
+                {
+                    GameOverLabel.Text = "You Won";
+                    isGameOver = true;
+                }
+                if (node.WinValue == 1 && node.Neighbors.Count == 0)
+                {
+                    GameOverLabel.Text = "You Lost";
+                    isGameOver = true;
+                }
+                if (node.Neighbors.Count == 0)
+                {
+                    GameOverLabel.Text = "Tie";
+                    isGameOver = true;
+                    return;
+                }
+
+                Node nextNode = node.Neighbors[0];
+
+                for (int i = 0; i < node.Neighbors.Count; i++)
+                {
+                    if (nextNode.WinValue < node.Neighbors[i].WinValue)
+                    {
+                        nextNode = node.Neighbors[i];
+                    }
+                }
+
+                node = nextNode;
+                currentBoardState = node.Value;
+                isUserTurn = true;
+                DrawBoard();
             }
         }
-
 
         private void ResetButton_Click(object sender, EventArgs e)
         {
             GameOverLabel.Text = "";
             isUserTurn = true;
             isGameOver = false;
-            graph = new Graph();
-            graph.GenerateGraph();
             node = graph.Nodes[0];
+            currentBoardState = node.Value;
 
             for(int x = 0; x < 3; x++)
             {
                 for(int y = 0; y < 3; y++)
                 {
                     grid[x, y].Text = "";
-                    currentBoardState[x, y] = (char)0;
                 }
             }
         }

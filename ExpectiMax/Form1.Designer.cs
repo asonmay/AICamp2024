@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             buttonA = new Button();
             buttonH = new Button();
             buttonE = new Button();
@@ -39,7 +38,6 @@
             buttonI = new Button();
             buttonF = new Button();
             panel1 = new Panel();
-            timer1 = new System.Windows.Forms.Timer(components);
             ResetButton = new Button();
             GameOverLabel = new Label();
             panel1.SuspendLayout();
@@ -152,12 +150,6 @@
             panel1.Size = new Size(236, 238);
             panel1.TabIndex = 9;
             // 
-            // timer1
-            // 
-            timer1.Enabled = true;
-            timer1.Interval = 17;
-            timer1.Tick += timer1_Tick;
-            // 
             // ResetButton
             // 
             ResetButton.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -206,7 +198,6 @@
         private Button buttonI;
         private Button buttonF;
         private Panel panel1;
-        private System.Windows.Forms.Timer timer1;
         private Button ResetButton;
         private Label GameOverLabel;
     }

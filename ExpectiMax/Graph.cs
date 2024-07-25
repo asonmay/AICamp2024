@@ -75,17 +75,17 @@ namespace ExpectiMax
                 {
                     if (i == index)
                     {
-                        currentNode.Neighbors[i].Chance = 90;
+                        currentNode.Neighbors[i].Chance = currentNode.IsChance ? 90 : 10 / (currentNode.Neighbors.Count - 1);
                     }
                     else
                     {
-                        currentNode.Neighbors[i].Chance = (10 / currentNode.Neighbors.Count) - 1;
+                        currentNode.Neighbors[i].Chance = currentNode.IsChance ? 90 : 10 / (currentNode.Neighbors.Count - 1);
                     }
                 }
             }
             else
             {
-                currentNode.Neighbors[0].Chance = 100;
+                  currentNode.Neighbors[0].Chance = 100;
             }
         }
             
