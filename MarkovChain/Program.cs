@@ -1,55 +1,43 @@
-﻿using System.Diagnostics.Tracing;
+﻿using MarkovDecisionProcesses;
+using System.Diagnostics.Tracing;
+using System.Drawing;
+using System.Threading.Tasks.Dataflow;
 
-namespace MarkovChain
+namespace MarkovDecisionProcesses
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            string text = File.ReadAllText(@"\\GMRDC1\Folder Redirection\mason.lee\Documents\text.txt").ToLower();
+            Point size = new Point(4, 3);
+            Grid grid = new Grid(size);
 
-            string[] words = text.Split([' ', '\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            grid.Nodes = new Node[,]
+            {
+                { new Node(-1, true), new Node(-1, true), new Node(-1, true), new Node(-1, true), new Node(10, true), new Node(-1, true), },
+                { new Node(-1, true), new Node(-1, false), new Node(-1, false), new Node(-1, false), new Node(10, false), new Node(-1, true), },
+                { new Node(-1, true), new Node(-1, false), new Node(-1, true), new Node(-1, false), new Node(-100, false), new Node(-1, true), },
+                { new Node(-1, true), new Node(-1, false), new Node(-1, false), new Node(-1, false), new Node(-1, false), new Node(-1, true), },
+                { new Node(-1, true), new Node(-1, true), new Node(-1, true), new Node(-1, true), new Node(10, true), new Node(-1, true), },
+            };
 
-            string[] sentence = GetSentence(words, "the");
-            
-            for(int i = 0; i < sentence.Length; i++)
+            for(int x = 0; x < grid.Nodes.GetLength(0); x++)
             {
-                Console.Write(sentence[i] + " ");
-            }
-            Console.WriteLine();
-            Console.WriteLine();
-        }
-        
-        static Dictionary<string, List<string>> GetWords(string[] words)
-        {
-            Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>();
-            for (int i = 0; i < words.Length - 1; i++)
-            {
-                if (!dictionary.ContainsKey(words[i]))
+                for(int y = 0; y < grid.Nodes.GetLength(1); y++)
                 {
-                    dictionary.Add(words[i], new List<string> { words[i + 1] });
-                }
-                else
-                {
-                    dictionary[words[i]].Add(words[i + 1]);
+                    if(x + 1 < grid.Nodes.GetLength(0))
+                    {
+                        grid.Nodes[x, y].AddNeighbor(grid.Nodes[x + 1, y]);
+                        grid.Nodes[x + 1, y].AddNeighbor(grid.Nodes[x, y]);
+                    }
+                    if (y + 1 < grid.Nodes.GetLength(0))
+                    {
+                        grid.Nodes[x, y].AddNeighbor(grid.Nodes[x, y + 1]);
+                        grid.Nodes[x, y + 1].AddNeighbor(grid.Nodes[x, y]);
+                    }
                 }
             }
-            return dictionary;
-        }
-
-        static string[] GetSentence(string[] words, string startingWord)
-        {
-            Dictionary<string, List<string>> dictionary = GetWords(words);
-            List<string> sentance = new List<string>();
-            Random random = new Random();
-            sentance.Add(startingWord);
-
-            while (sentance[^1][^1] != '.')
-            {
-                sentance.Add(dictionary[sentance[^1]][random.Next(dictionary[sentance[^1]].Count)]);
-            }
-
-            return sentance.ToArray();
+            ;
         }
     }
 }
