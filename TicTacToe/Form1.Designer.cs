@@ -47,92 +47,110 @@
             // 
             // buttonA
             // 
+            buttonA.BackColor = Color.White;
+            buttonA.FlatStyle = FlatStyle.Flat;
             buttonA.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            buttonA.Location = new Point(0, 0);
+            buttonA.Location = new Point(-2, -2);
             buttonA.Name = "buttonA";
             buttonA.Size = new Size(75, 75);
             buttonA.TabIndex = 0;
-            buttonA.UseVisualStyleBackColor = true;
+            buttonA.UseVisualStyleBackColor = false;
             buttonA.Click += buttonA_Click;
             // 
             // buttonH
             // 
+            buttonH.BackColor = Color.White;
+            buttonH.FlatStyle = FlatStyle.Flat;
             buttonH.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            buttonH.Location = new Point(81, 162);
+            buttonH.Location = new Point(81, 163);
             buttonH.Name = "buttonH";
             buttonH.Size = new Size(75, 75);
             buttonH.TabIndex = 1;
-            buttonH.UseVisualStyleBackColor = true;
+            buttonH.UseVisualStyleBackColor = false;
             buttonH.Click += buttonH_Click;
             // 
             // buttonE
             // 
+            buttonE.BackColor = Color.White;
+            buttonE.FlatStyle = FlatStyle.Flat;
             buttonE.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             buttonE.Location = new Point(81, 81);
             buttonE.Name = "buttonE";
             buttonE.Size = new Size(75, 75);
             buttonE.TabIndex = 2;
-            buttonE.UseVisualStyleBackColor = true;
+            buttonE.UseVisualStyleBackColor = false;
             buttonE.Click += buttonE_Click;
             // 
             // buttonG
             // 
+            buttonG.BackColor = Color.White;
+            buttonG.FlatStyle = FlatStyle.Flat;
             buttonG.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            buttonG.Location = new Point(0, 162);
+            buttonG.Location = new Point(-2, 163);
             buttonG.Name = "buttonG";
             buttonG.Size = new Size(75, 75);
             buttonG.TabIndex = 3;
-            buttonG.UseVisualStyleBackColor = true;
+            buttonG.UseVisualStyleBackColor = false;
             buttonG.Click += button4_Click;
             // 
             // buttonD
             // 
+            buttonD.BackColor = Color.White;
+            buttonD.FlatStyle = FlatStyle.Flat;
             buttonD.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            buttonD.Location = new Point(0, 81);
+            buttonD.Location = new Point(-2, 81);
             buttonD.Name = "buttonD";
             buttonD.Size = new Size(75, 75);
             buttonD.TabIndex = 4;
-            buttonD.UseVisualStyleBackColor = true;
+            buttonD.UseVisualStyleBackColor = false;
             buttonD.Click += buttonD_Click;
             // 
             // buttonC
             // 
+            buttonC.BackColor = Color.White;
+            buttonC.FlatStyle = FlatStyle.Flat;
             buttonC.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            buttonC.Location = new Point(162, 0);
+            buttonC.Location = new Point(163, -2);
             buttonC.Name = "buttonC";
             buttonC.Size = new Size(75, 75);
             buttonC.TabIndex = 5;
-            buttonC.UseVisualStyleBackColor = true;
+            buttonC.UseVisualStyleBackColor = false;
             buttonC.Click += buttonC_Click;
             // 
             // buttonB
             // 
+            buttonB.BackColor = Color.White;
+            buttonB.FlatStyle = FlatStyle.Flat;
             buttonB.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            buttonB.Location = new Point(81, 0);
+            buttonB.Location = new Point(81, -2);
             buttonB.Name = "buttonB";
             buttonB.Size = new Size(75, 75);
             buttonB.TabIndex = 6;
-            buttonB.UseVisualStyleBackColor = true;
+            buttonB.UseVisualStyleBackColor = false;
             buttonB.Click += buttonB_Click;
             // 
             // buttonI
             // 
+            buttonI.BackColor = Color.White;
+            buttonI.FlatStyle = FlatStyle.Flat;
             buttonI.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            buttonI.Location = new Point(162, 162);
+            buttonI.Location = new Point(163, 163);
             buttonI.Name = "buttonI";
             buttonI.Size = new Size(75, 75);
             buttonI.TabIndex = 7;
-            buttonI.UseVisualStyleBackColor = true;
+            buttonI.UseVisualStyleBackColor = false;
             buttonI.Click += buttonI_Click;
             // 
             // buttonF
             // 
+            buttonF.BackColor = Color.White;
+            buttonF.FlatStyle = FlatStyle.Flat;
             buttonF.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            buttonF.Location = new Point(162, 81);
+            buttonF.Location = new Point(163, 81);
             buttonF.Name = "buttonF";
             buttonF.Size = new Size(75, 75);
             buttonF.TabIndex = 8;
-            buttonF.UseVisualStyleBackColor = true;
+            buttonF.UseVisualStyleBackColor = false;
             buttonF.Click += buttonF_Click;
             // 
             // panel1
@@ -149,7 +167,7 @@
             panel1.Controls.Add(buttonD);
             panel1.Location = new Point(12, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(236, 238);
+            panel1.Size = new Size(236, 236);
             panel1.TabIndex = 9;
             // 
             // timer1
@@ -182,6 +200,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
             ClientSize = new Size(262, 348);
             Controls.Add(GameOverLabel);
             Controls.Add(ResetButton);
