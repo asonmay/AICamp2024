@@ -14,7 +14,11 @@ namespace ExpectiMax
     {
         public List<Node> Nodes;
 
-        public Graph() => Nodes = new List<Node>();
+        private Dictionary<char[,], Node> gameStates;
+
+        private int chanceOfMistake;
+
+        public Graph(int chanceOfMistake) => (Nodes, gameStates, this.chanceOfMistake) = (new List<Node>(), new Dictionary<char[,], Node>(new CharArrayEquality()), chanceOfMistake);
 
         public void AddNode(Node node) => Nodes.Add(node);
 
@@ -37,10 +41,18 @@ namespace ExpectiMax
 
                 for (int i = 0; i < sucessors.Count; i++)
                 {
-                    AddNode(sucessors[i]);
-                    AddEdge(currentNode, sucessors[i]);
-                    stack.Push(sucessors[i]);
-                    frontier.Enqueue(sucessors[i]);
+                    if (gameStates.ContainsKey(sucessors[i].Value))
+                    {
+                        AddEdge(currentNode, gameStates[sucessors[i].Value]);
+                    }
+                    else
+                    {
+                        AddNode(sucessors[i]);
+                        AddEdge(currentNode, sucessors[i]);
+                        gameStates.Add(sucessors[i].Value, sucessors[i]);
+                        stack.Push(sucessors[i]);
+                        frontier.Enqueue(sucessors[i]);
+                    }
                 }
             }
         }
@@ -75,11 +87,11 @@ namespace ExpectiMax
                 {
                     if (i == index)
                     {
-                        currentNode.Neighbors[i].Chance = currentNode.IsChance ? 90 : 10 / (currentNode.Neighbors.Count - 1);
+                        currentNode.Neighbors[i].Chance = currentNode.IsChance ? 100 - chanceOfMistake : chanceOfMistake / (currentNode.Neighbors.Count - 1);
                     }
                     else
                     {
-                        currentNode.Neighbors[i].Chance = currentNode.IsChance ? 90 : 10 / (currentNode.Neighbors.Count - 1);
+                        currentNode.Neighbors[i].Chance = currentNode.IsChance ? 100 - chanceOfMistake : chanceOfMistake / (currentNode.Neighbors.Count - 1);
                     }
                 }
             }
@@ -122,6 +134,5 @@ namespace ExpectiMax
             CreateNodes(ref currentNode, stack);
             GenerateWinValues(currentNode, stack);
         }
-
     }
 }

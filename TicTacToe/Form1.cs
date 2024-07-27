@@ -22,7 +22,7 @@ namespace TicTacToe
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            gameStates = new Dictionary<char[,], Node>();
+            gameStates = new Dictionary<char[,], Node>(new CharArrayEquality());
             isUserTurn = true;
             Graph graph = GenerateGraph();
             currentBoardState = new char[3, 3];
@@ -52,12 +52,19 @@ namespace TicTacToe
 
                 for (int i = 0; i < sucessors.Count; i++)
                 {
-                    graph.AddNode(sucessors[i]);
-                    graph.AddEdge(currentNode, sucessors[i]);
-                    gameStates.Add(sucessors[i].Value, sucessors[i]);
+                    if (gameStates.ContainsKey(sucessors[i].Value))
+                    {
+                        graph.AddEdge(currentNode, gameStates[sucessors[i].Value]);
+                    }
+                    else
+                    {
+                        graph.AddNode(sucessors[i]);
+                        graph.AddEdge(currentNode, sucessors[i]);
+                        gameStates.Add(sucessors[i].Value, sucessors[i]);
+                        stack.Push(sucessors[i]);
+                        frontier.Enqueue(sucessors[i]);
+                    }
                     
-                    stack.Push(sucessors[i]);
-                    frontier.Enqueue(sucessors[i]);
                 }
             }
         }

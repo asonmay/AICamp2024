@@ -22,7 +22,7 @@ namespace ExpectiMax
         private void Form1_Load(object sender, EventArgs e)
         {
             isUserTurn = true;
-            graph = new Graph();
+            graph = new Graph(10);
             graph.GenerateGraph();
             currentBoardState = new char[3, 3];
             isGameOver = false;

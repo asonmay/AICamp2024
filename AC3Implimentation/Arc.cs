@@ -59,6 +59,7 @@ namespace AC3Implimentation
                     tailArc.isChecked = false;
                 }
             }
+
             isChecked = true;
         }
     }
